@@ -20,7 +20,7 @@ O plano completo, com as sete fases e o orçamento da AWS, está
 | Módulo   | Fase | O que é                                                |
 |----------|------|--------------------------------------------------------|
 | `parser` | 1    | Lê o `.xlsx` do fornecedor. Java 21 puro, sem framework |
-| `preco`  | 2    | Motor de preço base — ainda não existe                  |
+| `preco`  | 2    | Motor de preço base: dólar, markup, frete, juros e desconto |
 | `lambda` | 5    | Handler Kotlin disparado por evento do S3 — ainda não existe |
 
 ## Rodar os testes
