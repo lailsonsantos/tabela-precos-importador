@@ -1,0 +1,21 @@
+# Build
+build/
+.gradle/
+bin/
+out/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Dados reais do fornecedor — NUNCA versionar.
+# Contém preço de custo e margem. Os testes usam a fixture anonimizada
+# em parser/src/test/resources/tabela-exemplo.xlsx.
+*.xlsx
+!parser/src/test/resources/tabela-exemplo.xlsx
+dados-reais/
+
+# Local
+.env
+.DS_Store
