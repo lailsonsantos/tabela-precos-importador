@@ -1,9 +1,24 @@
 [versions]
+kotlin = "2.2.0"
 poi = "5.4.1"
+awsSdk = "2.34.0"
+lambdaCore = "1.2.3"
+lambdaEvents = "3.16.1"
+testcontainers = "1.21.3"
 junit = "5.13.4"
 assertj = "3.27.3"
 
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
 [libraries]
+aws-bom = { module = "software.amazon.awssdk:bom", version.ref = "awsSdk" }
+aws-s3 = { module = "software.amazon.awssdk:s3" }
+lambda-core = { module = "com.amazonaws:aws-lambda-java-core", version.ref = "lambdaCore" }
+lambda-events = { module = "com.amazonaws:aws-lambda-java-events", version.ref = "lambdaEvents" }
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
+testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
+testcontainers-localstack = { module = "org.testcontainers:localstack" }
 poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }

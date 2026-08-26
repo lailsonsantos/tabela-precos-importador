@@ -1,5 +1,9 @@
 plugins {
     java
+    // Declarado aqui sem aplicar: só o módulo lambda é Kotlin. O parser e o
+    // motor de preço ficam em Java para a API poder reaproveitá-los um dia
+    // sem carregar a biblioteca padrão do Kotlin junto.
+    alias(libs.plugins.kotlin) apply false
 }
 
 allprojects {

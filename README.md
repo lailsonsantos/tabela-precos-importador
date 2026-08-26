@@ -21,7 +21,7 @@ O plano completo, com as sete fases e o orçamento da AWS, está
 |----------|------|--------------------------------------------------------|
 | `parser` | 1    | Lê o `.xlsx` do fornecedor. Java 21 puro, sem framework |
 | `preco`  | 2    | Motor de preço base: dólar, markup, frete, juros e desconto |
-| `lambda` | 5    | Handler Kotlin disparado por evento do S3 — ainda não existe |
+| `lambda` | 5    | Handler Kotlin disparado por evento do S3                |
 
 ## Rodar os testes
 
@@ -37,6 +37,33 @@ TABELA_REAL="$HOME/Downloads/TABELA GERAL 25-08.xlsx" ./gradlew test
 ```
 
 Sem a variável, esse teste é pulado e o resto continua rodando.
+
+## O importador na AWS
+
+O fluxo fechado: o administrador pede uma URL assinada à API, o navegador
+manda o `.xlsx` direto para o S3, o bucket dispara o evento e esta função lê,
+calcula e entrega para a API.
+
+```bash
+./gradlew :lambda:build   # gera build/distributions/importador.zip
+```
+
+Variáveis que a função precisa:
+
+| Variável     | Para quê                                              |
+|--------------|-------------------------------------------------------|
+| `API_URL`    | Endereço da API                                        |
+| `API_EMAIL`  | Administrador de serviço que o importador usa          |
+| `API_SENHA`  | Senha dele                                             |
+| `S3_ENDPOINT`| Só em desenvolvimento, para apontar ao LocalStack      |
+
+A função **não escreve no banco**. Escrever direto colocaria dois donos no
+mesmo esquema — bastaria uma migration para o importador parar de funcionar
+sem ninguém perceber — e obrigaria a função a viver dentro da VPC, que é o que
+traz o NAT Gateway de trinta dólares por mês.
+
+A cotação do dólar também vem da API, não de variável de ambiente: mudar o
+câmbio não pode exigir republicar uma função.
 
 ## Sobre os dados
 
