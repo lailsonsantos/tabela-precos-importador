@@ -157,9 +157,22 @@ public final class PlanilhaParser {
         return celula.getCellType() == CellType.STRING ? celula.getStringCellValue() : "";
     }
 
-    /** Devolve null para célula ausente, textual ou com erro de fórmula. */
+    /**
+     * Devolve null para célula ausente, textual ou com erro de fórmula.
+     *
+     * <p>As colunas calculadas da planilha são fórmulas compartilhadas, e a
+     * coluna de custo pode virar uma a qualquer momento. Nesse caso vale o
+     * último valor que o Excel guardou em cache: recalcular exigiria avaliar a
+     * fórmula, e o número que o fornecedor viu na tela é o que ele cotou.
+     */
     private static BigDecimal numeroDe(Cell celula) {
-        if (celula == null || celula.getCellType() != CellType.NUMERIC) {
+        if (celula == null) {
+            return null;
+        }
+        CellType tipo = celula.getCellType() == CellType.FORMULA
+                ? celula.getCachedFormulaResultType()
+                : celula.getCellType();
+        if (tipo != CellType.NUMERIC) {
             return null;
         }
         return BigDecimal.valueOf(celula.getNumericCellValue());
