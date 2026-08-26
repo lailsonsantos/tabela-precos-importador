@@ -10,7 +10,7 @@ o frete e — de propósito — as duas peculiaridades que os testes precisam:
   * as linhas separadoras e as células com #VALUE!.
 
 Uso:
-    python3 tools/anonimizar.py "ENTRADA.xlsx" parser/src/test/resources/tabela-exemplo.xlsx
+    python3 tools/anonimizar.py "ENTRADA.xlsx" parser/src/testFixtures/resources/tabela-exemplo.xlsx
 """
 import re
 import shutil

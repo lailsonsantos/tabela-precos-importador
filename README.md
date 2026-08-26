@@ -43,11 +43,11 @@ Sem a variável, esse teste é pulado e o resto continua rodando.
 A planilha real traz o preço de custo do fornecedor e por isso **nunca** entra
 no Git — o `.gitignore` bloqueia `*.xlsx` por padrão.
 
-Os testes usam `parser/src/test/resources/tabela-exemplo.xlsx`, gerado por:
+Os testes usam `parser/src/testFixtures/resources/tabela-exemplo.xlsx`, gerado por:
 
 ```bash
 python3 tools/anonimizar.py "$HOME/Downloads/TABELA GERAL 25-08.xlsx" \
-  parser/src/test/resources/tabela-exemplo.xlsx
+  parser/src/testFixtures/resources/tabela-exemplo.xlsx
 ```
 
 O script troca todo custo em dólar por um valor fictício estável e preserva de

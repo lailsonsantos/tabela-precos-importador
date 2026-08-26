@@ -11,9 +11,9 @@ out/
 
 # Dados reais do fornecedor — NUNCA versionar.
 # Contém preço de custo e margem. Os testes usam a fixture anonimizada
-# em parser/src/test/resources/tabela-exemplo.xlsx.
+# em parser/src/testFixtures/resources/tabela-exemplo.xlsx.
 *.xlsx
-!parser/src/test/resources/tabela-exemplo.xlsx
+!parser/src/testFixtures/resources/tabela-exemplo.xlsx
 dados-reais/
 
 # Local
