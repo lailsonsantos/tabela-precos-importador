@@ -6,7 +6,8 @@ import java.time.LocalDate
 /**
  * Serialização mínima, escrita à mão.
  *
- * <p>Jackson resolveria isso em uma linha e custaria uns oito megabytes no
+ *
+ * Jackson resolveria isso em uma linha e custaria uns oito megabytes no
  * pacote da função, que viram tempo de partida a frio em toda invocação. Para
  * um contrato de dois formatos de saída e dois campos de entrada, o preço não
  * se paga.

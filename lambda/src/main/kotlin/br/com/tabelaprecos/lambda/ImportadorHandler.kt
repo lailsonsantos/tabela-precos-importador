@@ -11,8 +11,14 @@ import java.time.LocalDate
 /**
  * Acordada pelo S3 quando uma planilha aparece no bucket.
  *
- * <p>Lê o arquivo, calcula a tabela do dia e entrega para a API. Não escreve
+ *
+ * Lê o arquivo, calcula a tabela do dia e entrega para a API. Não escreve
  * no banco: quem escreve é a API, dona do esquema.
+ *
+ * @param leitor de onde vêm os bytes da planilha
+ * @param api para onde vai o resultado
+ * @param montador transforma o que o parser leu no corpo que a API espera
+ * @param hoje injetável para o teste não depender da data em que roda
  */
 class ImportadorHandler(
     private val leitor: LeitorDeObjeto,
@@ -25,6 +31,15 @@ class ImportadorHandler(
     @Suppress("unused")
     constructor() : this(LeitorDoS3(), ClienteDaApi.doAmbiente())
 
+    /**
+     * Processa cada objeto do evento.
+     *
+     * @param evento pode trazer mais de um registro quando vários arquivos
+     *     caem no bucket ao mesmo tempo
+     * @param contexto nulo nos testes; na AWS traz o logger da função
+     * @return um resumo por arquivo, que aparece no log da invocação
+     * @throws FalhaDaApi se a API recusar, para a invocação ser reprocessada
+     */
     override fun handleRequest(evento: S3Event, contexto: Context?): String {
         val resumos = evento.records.map { registro ->
             val bucket = registro.s3.bucket.name

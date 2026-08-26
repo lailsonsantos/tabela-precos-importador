@@ -12,11 +12,22 @@ import java.time.LocalDate
  * A política de custo é decisão de negócio e vem de fora: o padrão reproduz o
  * preço que o fornecedor já pratica, descartando os centavos como a planilha
  * faz.
+ *
+ * @param politica qual dos dois custos da planilha vale
  */
 class MontadorDaCarga(
     private val politica: PoliticaDeCusto = PoliticaDeCusto.COMO_A_PLANILHA,
 ) {
 
+    /**
+     * Monta o corpo que vai para a API.
+     *
+     * @param resultado o que o parser conseguiu ler da planilha
+     * @param origem chave do objeto no S3, guardada para auditoria
+     * @param cotacao quantos reais vale um dólar, consultada na API
+     * @param hoje usada só quando a planilha não declara data no nome da aba
+     * @return a carga completa, com o preço base de cada item já resolvido
+     */
     fun montar(
         resultado: ResultadoImportacao,
         origem: String,
