@@ -99,7 +99,10 @@ class CalculadoraPrecoTest {
 
             assertThat(preco.precoBaseBrl()).isEqualByComparingTo("757.75");
             assertThat(preco.descontoBrl()).isEqualByComparingTo("75.78");
-            assertThat(preco.precoFinalBrl()).isEqualByComparingTo("681.98");
+            assertThat(preco.precoFinalBrl()).isEqualByComparingTo("681.97");
+            // O que a tela mostra fecha: 757,75 - 75,78 = 681,97.
+            assertThat(preco.precoBaseBrl().subtract(preco.descontoBrl()))
+                    .isEqualByComparingTo(preco.precoFinalBrl());
         }
 
         @Test
@@ -112,9 +115,9 @@ class CalculadoraPrecoTest {
                     new AjustesComerciais(
                             new BigDecimal("0.04"), BigDecimal.ZERO, new BigDecimal("0.10")));
 
-            // 757.7545 - 10% = 681.97905; 4% disso = 27.2791...
+            // 757,75 - 10% = 681,97; 4% disso = 27,2788 -> 27,28.
             assertThat(comAmbos.acrescimosBrl()).isEqualByComparingTo("27.28");
-            assertThat(comAmbos.precoFinalBrl()).isEqualByComparingTo("709.26");
+            assertThat(comAmbos.precoFinalBrl()).isEqualByComparingTo("709.25");
 
             // Se a ordem fosse a inversa, o acréscimo sairia de 757.75 e daria
             // R$ 30.31 — quase três reais a mais no bolso do cliente.

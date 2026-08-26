@@ -71,9 +71,15 @@ public final class CalculadoraPreco {
         BigDecimal valorDoMarkup = escala(base.multiply(percentualDeMarkup));
         BigDecimal precoBase = base.add(valorDoMarkup).add(frete);
 
-        BigDecimal desconto = escala(precoBase.multiply(ajustes.descontoPct()));
-        BigDecimal comDesconto = precoBase.subtract(desconto);
-        BigDecimal acrescimos = escala(comDesconto.multiply(ajustes.acrescimoTotal()));
+        // O preço base sai da conta inteira e só então vira centavo, porque
+        // precisa bater com a planilha do fornecedor. Do desconto em diante a
+        // regra é outra: cada parcela vira centavo antes de entrar na soma,
+        // para o que aparece na tela fechar. Quem olha a vitrine confere a
+        // conta de cabeça, e um centavo sobrando vira ligação do cliente.
+        BigDecimal precoBaseEmCentavos = centavos(precoBase);
+        BigDecimal desconto = centavos(precoBaseEmCentavos.multiply(ajustes.descontoPct()));
+        BigDecimal comDesconto = precoBaseEmCentavos.subtract(desconto);
+        BigDecimal acrescimos = centavos(comDesconto.multiply(ajustes.acrescimoTotal()));
 
         return new PrecoCalculado(
                 custo,
@@ -81,10 +87,10 @@ public final class CalculadoraPreco {
                 centavos(base),
                 centavos(valorDoMarkup),
                 centavos(frete),
-                centavos(precoBase),
-                centavos(desconto),
-                centavos(acrescimos),
-                centavos(comDesconto.add(acrescimos)));
+                precoBaseEmCentavos,
+                desconto,
+                acrescimos,
+                comDesconto.add(acrescimos));
     }
 
     private static BigDecimal escala(BigDecimal valor) {
