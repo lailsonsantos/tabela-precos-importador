@@ -25,10 +25,19 @@ kotlin {
 
 tasks.withType<Test>().configureEach {
     // O Docker 29 recusa versões de API abaixo da 1.40 e o cliente que o
-    // Testcontainers embute ainda negocia a 1.32.
+    // Testcontainers embute ainda negocia a 1.32. A 1.43 é o maior
+    // denominador comum entre a máquina local e o runner do GitHub.
     systemProperty(
         "api.version",
-        providers.environmentVariable("DOCKER_API_VERSION").getOrElse("1.44"))
+        providers.environmentVariable("DOCKER_API_VERSION").getOrElse("1.43"))
+}
+
+/** Roda o importador na máquina, contra o LocalStack ou contra a API local. */
+val rodarLocal by tasks.registering(JavaExec::class) {
+    group = "application"
+    description = "Importa um arquivo que já está no bucket, sem publicar a função"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("br.com.tabelaprecos.lambda.ImportadorLocal")
 }
 
 /** Zip que o Lambda espera: as classes na raiz e as dependências em lib/. */

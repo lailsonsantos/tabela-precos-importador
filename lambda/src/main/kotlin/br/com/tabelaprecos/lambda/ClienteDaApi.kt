@@ -27,7 +27,7 @@ class FalhaDaApi(mensagem: String) : RuntimeException(mensagem)
  * que é o que evita o NAT Gateway de trinta dólares por mês.
  */
 class ClienteDaApi(
-    private val base: String,
+    base: String,
     private val email: String,
     private val senha: String,
     private val http: HttpClient = HttpClient.newBuilder()
@@ -35,6 +35,9 @@ class ClienteDaApi(
         .build(),
 ) : ApiDeCatalogo {
 
+    // A Function URL da AWS termina em barra; concatenar o caminho por cima
+    // produziria "...//auth/login", que a API responde com 404.
+    private val base = base.trimEnd('/')
     private val json = Json()
     private var token: String? = null
 
